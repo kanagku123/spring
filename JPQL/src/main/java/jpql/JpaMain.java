@@ -18,8 +18,14 @@ public class JpaMain {
 
                 Member member = new Member();
                 member.setUsername("member1");
+                member.setAge(10);
                 em.persist(member);
 
+                em.flush();
+                em.clear();
+
+                em.createQuery("select o.address from Order o", Address.class)
+                                .getResultList();
 
 
 
