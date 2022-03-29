@@ -17,30 +17,49 @@ public class JpaMain {
         tx.begin();
             try {
 
-                for (int i=0;i<100;i++) {
+
+                    Team team = new Team();
+                    team.setName("teamA");
+                    em.persist(team);
+
                     Member member = new Member();
-                    member.setUsername("member1" + i);
-                    member.setAge(i);
+                    member.setUsername("member1");
+                    member.setAge(10);
+                    member.setTeam(team);
                     em.persist(member);
-                }
+
 
                 em.flush();
                 em.clear();
 
-
-                //.setFirstResult(1)
-                // .setMaxResults(10)
-                List<Member> result = em.createQuery("select m from Member m order by m.age desc ", Member.class)
+                /* inner join
+                List<Member> result = em.createQuery("select m from Member m inner join m.team t")
                                 .setFirstResult(1)
                                 .setMaxResults(10)
                                 . getResultList();
+                */
+                        // outer join
+                        /*List<Member> result = em.createQuery("select m from Member m left join m.team t")
+                        .setFirstResult(1)
+                        .setMaxResults(10)
+                        . getResultList();*/
+                /*
+                //inner join
+                // 세타 조인
+                String query = "select m from Member m inner join m.team t";
+                List<Member> result = em.createQuery(query,Member.class)
+                        . getResultList();
+                //outer join
+                String query = "select m from Member m left join m.team t";
+                List<Member> result = em.createQuery(query,Member.class)
+                        . getResultList();
 
-                System.out.println("memberDTO = " + result.size());
-                for (Member member1 : result) {
-                    System.out.println("member1 = " + member1);
+  */
 
-                }
-
+                // 세타 조인
+                String query = "select m from Member m ,  m.team t WHERE m.username = t.name";
+                List<Member> result = em.createQuery(query,Member.class)
+                        . getResultList();
 
 
                 tx.commit();
