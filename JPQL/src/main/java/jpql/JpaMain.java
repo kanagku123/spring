@@ -18,52 +18,6 @@ public class JpaMain {
             try {
 
 
-                    Team team = new Team();
-                    team.setName("teamA");
-                    em.persist(team);
-
-                    Member member = new Member();
-                    member.setUsername("member1");
-                    member.setAge(10);
-                    member.setTeam(team);
-                    em.persist(member);
-
-
-                em.flush();
-                em.clear();
-
-                /* inner join
-                List<Member> result = em.createQuery("select m from Member m inner join m.team t")
-                                .setFirstResult(1)
-                                .setMaxResults(10)
-                                . getResultList();
-                */
-                        // outer join
-                        /*List<Member> result = em.createQuery("select m from Member m left join m.team t")
-                        .setFirstResult(1)
-                        .setMaxResults(10)
-                        . getResultList();*/
-                /*
-                //inner join
-                // 세타 조인
-                String query = "select m from Member m inner join m.team t";
-                List<Member> result = em.createQuery(query,Member.class)
-                        . getResultList();
-                //outer join
-                String query = "select m from Member m left join m.team t";
-                List<Member> result = em.createQuery(query,Member.class)
-                        . getResultList();
-
-  */
-
-                // 세타 조인
-                String query = "select m from Member m ,  m.team t WHERE m.username = t.name";
-                List<Member> result = em.createQuery(query,Member.class)
-                        . getResultList();
-
-
-                tx.commit();
-
             }catch (Exception e){
 
                 tx.rollback();
